@@ -3,7 +3,8 @@ use num::{traits::NumAssign, ToPrimitive, Unsigned};
 pub struct IntegerPack<T>
 where
     T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy {
+    T: PartialOrd + Copy 
+{
     // resudual packed values
     value: T,
     // max value
@@ -13,6 +14,15 @@ where
     // next value to be extraced
     index: T,
 }
+
+pub trait Unpack<T = Self>
+where
+    T: Unsigned + NumAssign + ToPrimitive,
+    T: PartialOrd + Copy 
+{
+    fn unpack(&self, modulo: T, length: T) -> IntegerPack<T>;
+}
+
 
 pub fn unpack<T>(value: T, modulo: T, length: T) -> IntegerPack<T>
 where
@@ -62,6 +72,43 @@ where
     }
 }
 
+
+impl Unpack for u8 {
+    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+        unpack(*self, modulo, length)
+    }
+}
+
+impl Unpack for u16 {
+    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+        unpack(*self, modulo, length)
+    }
+}
+
+impl Unpack for u32 {
+    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+        unpack(*self, modulo, length)
+    }
+}
+
+impl Unpack for u64 {
+    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+        unpack(*self, modulo, length)
+    }
+}
+
+impl Unpack for u128 {
+    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+        unpack(*self, modulo, length)
+    }
+}
+
+impl Unpack for usize {
+    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+        unpack(*self, modulo, length)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     
@@ -69,7 +116,7 @@ mod tests {
 
     #[test]
     fn test_values_01() {
-        let mut it = unpack(0b11_00_01_10_11_00u16, 4, 7);
+        let mut it = 0b11_00_01_10_11_00u16.unpack(4, 7);
         assert_eq!(it.next(), Some(0));
         assert_eq!(it.next(), Some(3));
         assert_eq!(it.next(), Some(2));
@@ -83,7 +130,7 @@ mod tests {
 
     #[test]
     fn test_values_02() {
-        let mut it = unpack(0x89ABCDEFu32, 16, 9);
+        let mut it = 0x89ABCDEFu32.unpack(16, 9);
         assert_eq!(it.next(), Some(0xF));
         assert_eq!(it.next(), Some(0xE));
         assert_eq!(it.next(), Some(0xD));
@@ -99,7 +146,8 @@ mod tests {
 
     #[test]
     fn test_values_03() {
-        let mut it = unpack((1*1 + 2*3 + 0*9 + 2*27 + 1*81) as u32, 3, 6);
+        let v = (1*1 + 2*3 + 0*9 + 2*27 + 1*81) as u32;
+        let mut it = v.unpack(3, 6);
         assert_eq!(it.next(), Some(1));
         assert_eq!(it.next(), Some(2));
         assert_eq!(it.next(), Some(0));
@@ -119,7 +167,7 @@ mod tests {
 
     #[test]
     fn test_meta_02() {
-        let ref mut it = unpack(0x89ABCDEFu32, 16, 9);
+        let ref mut it = 0x89ABCDEFu32.unpack(16, 9);
 
         assert_eq!(it.size_hint(), (9, Some(9)));
 
