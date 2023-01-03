@@ -3,8 +3,7 @@ use num::{traits::NumAssign, ToPrimitive, Unsigned};
 pub struct IntegerPack<T>
 where
     T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy,
-{
+    T: PartialOrd + Copy {
     // resudual packed values
     value: T,
     // max value
@@ -18,7 +17,7 @@ where
 pub fn unpack<T>(value: T, modulo: T, length: T) -> IntegerPack<T>
 where
     T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy,
+    T: PartialOrd + Copy 
 {
     // intialize a new structure
     IntegerPack {
@@ -32,7 +31,7 @@ where
 impl<T> Iterator for IntegerPack<T>
 where
     T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy,
+    T: PartialOrd + Copy 
 {
     type Item = T;
 
@@ -63,8 +62,10 @@ where
     }
 }
 
+#[cfg(test)]
 mod tests {
-    use super::unpack;
+    
+    use super::*;
 
     #[test]
     fn test_values_01() {
