@@ -1,11 +1,9 @@
-use num::Unsigned;
+use num::{traits::NumAssign, ToPrimitive, Unsigned};
 
 pub struct IntegerPack<T>
 where
-    T: Unsigned,
-    T: PartialOrd,
-    T: Copy,
-    usize: From<T>
+    T: Unsigned + NumAssign + ToPrimitive,
+    T: PartialOrd + Copy,
 {
     // resudual packed values
     value: T,
@@ -19,10 +17,8 @@ where
 
 pub fn unpack<T>(value: T, modulo: T, length: T) -> IntegerPack<T>
 where
-    T: Unsigned,
-    T: PartialOrd,
-    T: Copy,
-    usize: From<T>
+    T: Unsigned + NumAssign + ToPrimitive,
+    T: PartialOrd + Copy,
 {
     // intialize a new structure
     IntegerPack {
@@ -35,22 +31,19 @@ where
 
 impl<T> Iterator for IntegerPack<T>
 where
-    T: Unsigned,
-    T: PartialOrd,
-    T: Copy, 
-    usize: From<T>
+    T: Unsigned + NumAssign + ToPrimitive,
+    T: PartialOrd + Copy,
 {
     type Item = T;
 
-    fn next(&mut self) -> Option<Self::Item> 
-    {
+    fn next(&mut self) -> Option<Self::Item> {
         if self.index < self.length {
             // compute next value
             let v = self.value % self.modulo;
 
             // update internal state
-            self.index = self.index + T::one();
-            self.value = self.value / self.modulo;
+            self.index += T::one();
+            self.value /= self.modulo;
 
             // return computed value
             Some(v)
@@ -60,17 +53,15 @@ where
         }
     }
 
-    fn size_hint(&self) -> (usize, Option<usize>)
-    {
-        let v = self.index - self.index;
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let v = self.length - self.index;
 
-        match v.try_into() {
-            Ok(v) => (v, Some(v)),
-            Err(_) => (0, None),
+        match v.to_usize() {
+            Some(v) => (v, Some(v)),
+            None => (0, None),
         }
     }
 }
-
 
 mod tests {
     use super::unpack;
@@ -106,6 +97,19 @@ mod tests {
     }
 
     #[test]
+    fn test_values_03() {
+        let mut it = unpack((1*1 + 2*3 + 0*9 + 2*27 + 1*81) as u32, 3, 6);
+        assert_eq!(it.next(), Some(1));
+        assert_eq!(it.next(), Some(2));
+        assert_eq!(it.next(), Some(0));
+        assert_eq!(it.next(), Some(2));
+        assert_eq!(it.next(), Some(1));
+        assert_eq!(it.next(), Some(0));
+        assert_eq!(it.next(), None);
+        assert_eq!(it.next(), None);
+    }
+
+    #[test]
     fn test_meta_01() {
         let ref mut it = unpack(0x89ABCDEFu32, 16, 9);
         assert_eq!(it.count(), 9);
@@ -115,10 +119,28 @@ mod tests {
     #[test]
     fn test_meta_02() {
         let ref mut it = unpack(0x89ABCDEFu32, 16, 9);
-        
+
         assert_eq!(it.size_hint(), (9, Some(9)));
 
         it.next();
         assert_eq!(it.size_hint(), (8, Some(8)));
+
+        it.next();
+        assert_eq!(it.size_hint(), (7, Some(7)));
+
+        it.next();
+        it.next();
+        it.next();
+        assert_eq!(it.size_hint(), (4, Some(4)));
+
+        it.next();
+        it.next();
+        it.next();
+        assert_eq!(it.size_hint(), (1, Some(1)));
+
+        it.next();
+        assert_eq!(it.size_hint(), (0, Some(0)));
+
+        //how to test (0, None) ??
     }
 }
