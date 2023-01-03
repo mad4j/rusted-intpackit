@@ -1,6 +1,6 @@
 [package]
-name = "rusted-intpackit"
-version = "0.1.0"
+name = "intpackit"
+version = "0.1.1"
 authors = ["Daniele Olmisani <daniele.olmisani@gmail.com>"]
 license = "GPL-3.0"
 edition = "2021"
