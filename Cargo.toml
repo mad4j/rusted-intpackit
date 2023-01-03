@@ -1,7 +1,15 @@
 [package]
 name = "rusted-intpackit"
 version = "0.1.0"
+authors = ["Daniele Olmisani <daniele.olmisani@gmail.com>"]
+license = "GPL-3.0"
 edition = "2021"
+description = "library that allows to manage unsigned values packed in a single integer"
+readme = "README.md"
+homepage = "https://mad4j.github.io/rusted-intpackit/"
+repository = "https://github.com/mad4j/rusted-intpackit"
+keywords = ["lib", "integer", "unpack", "iterator"]
+categories = ["integer-manipulation-library"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
