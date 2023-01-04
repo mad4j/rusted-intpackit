@@ -1,4 +1,4 @@
-# rusted-intpackit
+# intpackit
 Rust Integer Pack Iterator
 
 Library tha allow to extract integer values packaged in a larger integer.
