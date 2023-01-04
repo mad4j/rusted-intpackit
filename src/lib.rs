@@ -10,7 +10,7 @@ where
     modulo: T,
     // number of packed values
     length: T,
-    // next value to be extraced
+    // number of extracted values
     index: T,
 }
 
@@ -60,8 +60,8 @@ where
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
+        
         let v = self.length - self.index;
-
         match v.to_usize() {
             Some(v) => (v, Some(v)),
             None => (0, None),
