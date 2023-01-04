@@ -2,8 +2,7 @@ use num::{traits::NumAssign, ToPrimitive, Unsigned};
 
 pub struct IntegerPack<T>
 where
-    T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy 
+    T: Unsigned
 {
     // resudual packed values
     value: T,
@@ -17,8 +16,7 @@ where
 
 pub trait Unpack<T = Self>
 where
-    T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy 
+    T: Unsigned
 {
     fn unpack(&self, modulo: T, length: T) -> IntegerPack<T>;
 }
@@ -26,8 +24,7 @@ where
 
 pub fn unpack<T>(value: T, modulo: T, length: T) -> IntegerPack<T>
 where
-    T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy 
+    T: Unsigned
 {
     // intialize a new structure
     IntegerPack {
@@ -41,7 +38,7 @@ where
 impl<T> Iterator for IntegerPack<T>
 where
     T: Unsigned + NumAssign + ToPrimitive,
-    T: PartialOrd + Copy 
+    T: PartialOrd + Copy
 {
     type Item = T;
 
