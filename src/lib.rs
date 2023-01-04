@@ -69,42 +69,19 @@ where
     }
 }
 
-
-impl Unpack for u8 {
-    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
-        unpack(*self, modulo, length)
-    }
+// convenience macro to add implementation
+macro_rules! add_impl {
+    ($($t:ty)*) => ($(
+        impl Unpack for $t {
+            fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
+                unpack(*self, modulo, length)
+            }
+        }
+    )*)
 }
 
-impl Unpack for u16 {
-    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
-        unpack(*self, modulo, length)
-    }
-}
-
-impl Unpack for u32 {
-    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
-        unpack(*self, modulo, length)
-    }
-}
-
-impl Unpack for u64 {
-    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
-        unpack(*self, modulo, length)
-    }
-}
-
-impl Unpack for u128 {
-    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
-        unpack(*self, modulo, length)
-    }
-}
-
-impl Unpack for usize {
-    fn unpack(&self, modulo: Self, length: Self) -> IntegerPack<Self> {
-        unpack(*self, modulo, length)
-    }
-}
+// implement for primitive types
+add_impl! { usize u8 u16 u32 u64 u128 }
 
 #[cfg(test)]
 mod tests {
