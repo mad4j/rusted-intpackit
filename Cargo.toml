@@ -8,8 +8,8 @@ description = "library that allows to manage unsigned values packed in a single 
 readme = "README.md"
 homepage = "https://mad4j.github.io/rusted-intpackit/"
 repository = "https://github.com/mad4j/rusted-intpackit"
-keywords = ["lib", "integer", "unpack", "iterator"]
-categories = ["integer-manipulation-library"]
+keywords = ["lib", "integer", "unpack", "iterator", "mathematics", "numerics"]
+categories = ["integer-manipulation-library", "Algorithms", "Data Structures"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
